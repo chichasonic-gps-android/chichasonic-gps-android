@@ -1,0 +1,7 @@
+CAMBIOS V4 — referencia: ZIP V2 adjuntado por el usuario, con correcciones V3 integradas.
+- Se añadió android.permission.WAKE_LOCK y un PowerManager.PARTIAL_WAKE_LOCK adquirido solo mientras el recorrido está activo.
+- Se renueva cada 10 minutos con plazo máximo por adquisición de 20 minutos, y se libera al detener o destruir el servicio.
+- Se mejora la señal de inicio GPS y el control de antigüedad de transmisiones.
+- Las solicitudes de ubicación se reactivan si vuelve a habilitarse el proveedor GPS/red.
+- Se conserva la sesión y URL ya utilizada por Chichasonic, sin cambio de tablas ni de Worker.
+- Sigue siendo necesario desactivar restricciones de batería y probar con el Android real.

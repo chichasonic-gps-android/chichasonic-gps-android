@@ -1,0 +1,27 @@
+CHICHA SONIC GPS ANDROID V4 — pantalla bloqueada
+===============================================
+
+ESTE ZIP ES EL PROYECTO FUENTE, NO EL APK.
+
+1. Instala Android Studio (Windows) y deja que instale Android SDK Platform 35.
+2. Descomprime el ZIP. Abre esta carpeta en Android Studio usando "Open".
+3. Espera a que termine la sincronización Gradle; necesitas Internet.
+4. Menú Build > Build Bundle(s) / APK(s) > Build APK(s), o usa CREAR_APK_WINDOWS.bat.
+5. Una vez generado, instala app/build/outputs/apk/debug/app-debug.apk en el ANDROID del vendedor.
+6. Inicia sesión, pulsa PROBAR CONEXIÓN y luego COMENZAR RECORRIDO, sin abrir el GPS web al mismo tiempo.
+7. Concede ubicación PRECISA. En Ajustes de Android > Apps > Chicha Sonic Ruta > Batería, selecciona SIN RESTRICCIONES.
+8. Verifica GPS en el mapa desde otro teléfono; bloquea 5-10 min y muévete con seguridad para comprobar envíos.
+
+CAMBIOS vs ZIP V2 entregado por el usuario:
+- Cliente HTTP PATCH corregido mediante OkHttp (corrección V3 integrada).
+- Comprobación de conexión y alerta de señales retrasadas.
+- Servicio Android de ubicación tipo location iniciado desde pantalla visible.
+- WAKE_LOCK parcial renovable con límite de tiempo para reducir suspensiones de CPU con pantalla apagada; se libera al terminar.
+- Reactivación de las solicitudes de GPS al habilitar proveedor.
+- No modifica Cloudflare, Supabase, Worker enruta ni la página pública.
+
+NOTA: Un Wake Lock no garantiza acceso permanente a internet ni evita todas las restricciones de fabricantes.
+Para Android 14/15, inicia el GPS CON LA APP ABIERTA antes de bloquear; si el sistema finaliza el servicio,
+hay que volver a abrir la app e iniciar manualmente. No compartas contraseñas ni APKs con sesiones activas.
+
+V4 no se ha compilado ni comprobado en el teléfono real dentro de este entorno.
