@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:fillViewport="true" android:background="#07133F">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:padding="22dp">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="🥤 CHICHA SONIC" android:textColor="#D6FF76"
+            android:textStyle="bold" android:textSize="29sp" android:layout_marginTop="22dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="GPS DEL VENDEDOR · ANDROID" android:textColor="#BCCFFF"
+            android:textSize="13sp" android:layout_marginTop="4dp" android:layout_marginBottom="20dp" />
+
+        <LinearLayout android:id="@+id/loginBox" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:orientation="vertical"
+            android:background="@drawable/box_dark" android:padding="18dp">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="Ingresar como vendedor" android:textColor="#FFFFFF"
+                android:textStyle="bold" android:textSize="20sp" />
+            <EditText android:id="@+id/email" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:hint="Correo del vendedor"
+                android:inputType="textEmailAddress" android:singleLine="true"
+                android:autofillHints="emailAddress" android:textColor="#FFFFFF"
+                android:textColorHint="#A7B6DD" android:layout_marginTop="12dp"/>
+            <EditText android:id="@+id/password" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:hint="Contraseña"
+                android:inputType="textPassword" android:singleLine="true"
+                android:autofillHints="password" android:textColor="#FFFFFF"
+                android:textColorHint="#A7B6DD" />
+            <Button android:id="@+id/loginButton" android:layout_width="match_parent"
+                android:layout_height="54dp" android:text="ENTRAR AL PANEL"
+                android:textColor="#07133F" android:background="@drawable/box_lime"
+                android:layout_marginTop="15dp"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/controlBox" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:orientation="vertical"
+            android:background="@drawable/box_dark" android:padding="18dp"
+            android:visibility="gone">
+            <TextView android:id="@+id/driverLabel" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:textColor="#BCCFFF"
+                android:textSize="13sp" android:text="Vendedor autorizado" />
+            <TextView android:id="@+id/stateLabel" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:text="Recorrido detenido"
+                android:textColor="#FFFFFF" android:textStyle="bold"
+                android:textSize="24sp" android:layout_marginTop="8dp" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="Cuando comiences, tu ubicación será visible en el mapa público, también al bloquear el teléfono, siempre que Android mantenga activo el servicio. Aparecerá una notificación permanente para detenerlo."
+                android:textSize="14sp" android:textColor="#C3D2FF"
+                android:layout_marginTop="10dp" android:layout_marginBottom="16dp" />
+            <Button android:id="@+id/startButton" android:layout_width="match_parent"
+                android:layout_height="58dp" android:background="@drawable/box_lime"
+                android:textColor="#07133F" android:text="▶ COMENZAR RECORRIDO" />
+            <Button android:id="@+id/stopButton" android:layout_width="match_parent"
+                android:layout_height="54dp" android:background="@drawable/box_red"
+                android:textColor="#FFFFFF" android:text="■ TERMINAR RECORRIDO"
+                android:layout_marginTop="10dp" />
+            <Button android:id="@+id/testConnectionButton" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:text="✓ PROBAR CONEXIÓN SUPABASE"
+                android:layout_marginTop="12dp" />
+            <Button android:id="@+id/batteryButton" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:text="⚙ Configurar batería y permisos"
+                android:layout_marginTop="10dp" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="Configura batería SIN RESTRICCIONES y ubicación PRECISA. El GPS puede consumir más batería. Inicia el recorrido antes de bloquear el teléfono."
+                android:textSize="12sp" android:textColor="#C3D2FF" android:layout_marginTop="6dp" />
+            <Button android:id="@+id/logoutButton" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:text="Cerrar sesión"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+
+        <TextView android:id="@+id/statusText" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:background="@drawable/box_dark"
+            android:padding="15dp" android:layout_marginTop="16dp"
+            android:text="Listo para conectar con Supabase."
+            android:textColor="#FFFFFF" android:textSize="14sp" />
+        <Button android:id="@+id/publicButton" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:text="Ver mapa público ↗"
+            android:layout_marginTop="15dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="IMPORTANTE: no cierres el recorrido desde el administrador web mientras uses este transmisor. Para parar, pulsa Terminar aquí o en la notificación."
+            android:textColor="#B3C5F3" android:textSize="12sp" android:layout_marginTop="18dp" />
+    </LinearLayout>
+</ScrollView>
