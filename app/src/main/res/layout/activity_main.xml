@@ -8,7 +8,7 @@
             android:text="🥤 CHICHA SONIC" android:textColor="#D6FF76"
             android:textStyle="bold" android:textSize="29sp" android:layout_marginTop="22dp" />
         <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="GPS DEL VENDEDOR · ANDROID" android:textColor="#BCCFFF"
+            android:text="PANEL DEL VENDEDOR · ANDROID V5" android:textColor="#BCCFFF"
             android:textSize="13sp" android:layout_marginTop="4dp" android:layout_marginBottom="20dp" />
 
         <LinearLayout android:id="@+id/loginBox" android:layout_width="match_parent"
@@ -55,6 +55,41 @@
                 android:layout_height="54dp" android:background="@drawable/box_red"
                 android:textColor="#FFFFFF" android:text="■ TERMINAR RECORRIDO"
                 android:layout_marginTop="10dp" />
+            <!-- Gestión nativa de la ruta informativa; no afecta servicio GPS -->
+            <LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:orientation="vertical"
+                android:padding="14dp" android:layout_marginTop="16dp"
+                android:background="@drawable/box_dark">
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="📍 PRÓXIMA PARADA Y AVISOS" android:textColor="#D6FF76"
+                    android:textStyle="bold" android:textSize="18sp" />
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="Aparecen en la página pública de Cloudflare, sin abrir el navegador."
+                    android:textColor="#C3D2FF" android:textSize="12sp" android:layout_marginTop="6dp" />
+                <EditText android:id="@+id/nextStopInput" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:hint="Próxima parada / sector"
+                    android:inputType="textCapSentences" android:maxLength="120"
+                    android:singleLine="true" android:textColor="#FFFFFF"
+                    android:textColorHint="#A7B6DD" android:layout_marginTop="12dp" />
+                <EditText android:id="@+id/announcementInput" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:hint="Mensaje para los clientes"
+                    android:inputType="textCapSentences|textMultiLine" android:maxLength="500"
+                    android:minLines="2" android:maxLines="4" android:gravity="top"
+                    android:textColor="#FFFFFF" android:textColorHint="#A7B6DD"
+                    android:layout_marginTop="5dp" />
+                <TextView android:id="@+id/routeStatusText"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:textColor="#D6FF76" android:textSize="12sp"
+                    android:layout_marginTop="8dp" />
+                <Button android:id="@+id/saveRouteButton" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:text="GUARDAR PARADA Y AVISO"
+                    android:background="@drawable/box_lime" android:textColor="#07133F"
+                    android:layout_marginTop="10dp" />
+                <Button android:id="@+id/reloadRouteButton" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:text="↻ Actualizar datos desde la web"
+                    android:layout_marginTop="6dp" />
+            </LinearLayout>
+
             <Button android:id="@+id/testConnectionButton" android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:text="✓ PROBAR CONEXIÓN SUPABASE"
                 android:layout_marginTop="12dp" />

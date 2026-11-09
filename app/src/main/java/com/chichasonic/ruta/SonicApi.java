@@ -108,6 +108,25 @@ public final class SonicApi {
             (data.optBoolean("is_live", false) ? "activo" : "detenido") + ".";
     }
 
+    /** Información de la próxima parada y aviso público; misma tabla del panel web. */
+    static JSONObject getRouteInfo(Context c) throws Exception {
+        JSONObject result = request("/rest/v1/sonic_info?id=eq.1&select=next_stop,announcement", "GET", null, validToken(c));
+        if (!result.has("array") || result.getJSONArray("array").length() != 1)
+            throw new Exception("No se pudo consultar la próxima parada (sonic_info / RLS).");
+        return result.getJSONArray("array").getJSONObject(0);
+    }
+
+    /** Actualiza ÚNICAMENTE los campos visibles de rutas, nunca toca sonic_live/GPS. */
+    static void saveRouteInfo(Context c, String nextStop, String announcement) throws Exception {
+        JSONObject payload = new JSONObject();
+        payload.put("next_stop", nextStop.trim());
+        payload.put("announcement", announcement.trim());
+        payload.put("updated_at", new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", java.util.Locale.US).format(new java.util.Date()));
+        JSONObject updated = request("/rest/v1/sonic_info?id=eq.1&select=id", "PATCH", payload, validToken(c));
+        if (!updated.has("array") || updated.getJSONArray("array").length() != 1)
+            throw new Exception("No se pudo guardar la parada. Revisa políticas RLS.");
+    }
+
     static void setLocation(Context c, boolean live, Double lat, Double lng, Float accuracy) throws Exception {
         JSONObject payload = new JSONObject();
         payload.put("is_live", live);

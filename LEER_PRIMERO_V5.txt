@@ -1,0 +1,33 @@
+CHICHA SONIC V5 — APP ANDROID DEL VENDEDOR (09-11-2026)
+
+ESTE ZIP contiene archivos fuente para GitHub Desktop / GitHub Actions.
+NO contiene APK; compílalo en GitHub Actions para obtener el artefacto.
+
+CAMBIOS respecto de V4:
+- GPS nativo en segundo plano SIN MODIFICACIONES a TrackingService.java.
+- Inicio de sesión existente en Supabase/RLS y prueba de conexión mantenidos.
+- PRÓXIMA PARADA y MENSAJE A CLIENTES agregados dentro de la app Android.
+- Botones Guardar y Recargar que leen/escriben los mismos campos de sonic_info en Supabase.
+- Acceso a web pública apunta al Worker actual Cloudflare.
+- android-actions/setup-android@v4 conservando la corrección de GitHub Actions.
+- Código de versión 5, para instalar encima del V4 en el mismo Android (build debug).
+
+PARA ACTUALIZAR SIN ANDROID STUDIO:
+1. Descomprime el ZIP.
+2. En GitHub Desktop abre el repositorio existente: chichasonic-gps-android.
+3. Repository > Show in Explorer. Copia EL CONTENIDO de este ZIP a esa carpeta, reemplazando archivos del mismo nombre.
+   Deben quedar app/, .github/, build.gradle, settings.gradle al nivel raíz.
+   No pongas una carpeta exterior adicional ni subas el ZIP comprimido a la raíz.
+4. Regresa a GitHub Desktop: Commit to main y luego Push origin.
+5. Abre https://github.com/chichasonic-gps-android/chichasonic-gps-android/actions
+6. Cuando la ejecución sea verde, descarga el artefacto CHICHASONIC-ANDROID-VENDEDOR-V5-APK.
+7. Descomprime el artefacto descargado e instala app-debug.apk en el Android.
+8. Abre la app, inicia sesión, actualiza una parada de prueba, mira el mapa web y prueba el GPS con pantalla bloqueada.
+
+IMPORTANTE:
+* Siempre prueba al actualizar con una cuenta autorizada. Evita transmitir al mismo tiempo desde la web y Android.
+* Antes de reemplazar el APK, termina el recorrido en V4 y confirma que la ubicación dejó de mostrarse.
+* No borres Supabase ni el Worker enruta. No tienes que crear tablas nuevas.
+* Al construir con GitHub Actions, el debug APK usa una firma de desarrollo. Si Android no permite actualizar encima
+  del V4 por firma diferente, desinstala el V4 SOLO después de detener el GPS; tendrás que iniciar sesión de nuevo.
+* Esta versión permite gestionar la próxima parada y el aviso existente; no añade todavía planificación de múltiples rutas.

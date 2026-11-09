@@ -16,9 +16,9 @@ import java.util.concurrent.Executors;
 public class MainActivity extends Activity {
     private static final int REQ_LOCATION = 1001;
     private static final int REQ_NOTIFICATION = 1002;
-    private EditText email, password;
-    private Button login, start, stop, logout, testConnection;
-    private TextView state, status, driver;
+    private EditText email, password, nextStop, routeAnnouncement;
+    private Button login, start, stop, logout, testConnection, saveRoute, reloadRoute;
+    private TextView state, status, driver, routeStatus;
     private View loginBox, controlBox;
     private final ExecutorService worker = Executors.newSingleThreadExecutor();
     private final Handler handler = new Handler(Looper.getMainLooper());
@@ -30,6 +30,11 @@ public class MainActivity extends Activity {
         super.onCreate(stateBundle);
         setContentView(R.layout.activity_main);
         email = findViewById(R.id.email); password = findViewById(R.id.password);
+        nextStop = findViewById(R.id.nextStopInput);
+        routeAnnouncement = findViewById(R.id.announcementInput);
+        routeStatus = findViewById(R.id.routeStatusText);
+        saveRoute = findViewById(R.id.saveRouteButton);
+        reloadRoute = findViewById(R.id.reloadRouteButton);
         login = findViewById(R.id.loginButton); start = findViewById(R.id.startButton);
         stop = findViewById(R.id.stopButton); logout = findViewById(R.id.logoutButton);
         testConnection = findViewById(R.id.testConnectionButton);
@@ -42,6 +47,8 @@ public class MainActivity extends Activity {
         stop.setOnClickListener(v -> sendStop());
         logout.setOnClickListener(v -> logout());
         testConnection.setOnClickListener(v -> checkConnection());
+        saveRoute.setOnClickListener(v -> saveRouteInfo());
+        reloadRoute.setOnClickListener(v -> loadRouteInfo());
         findViewById(R.id.batteryButton).setOnClickListener(v -> {
             Intent settings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                 Uri.fromParts("package", getPackageName(), null));
@@ -50,6 +57,7 @@ public class MainActivity extends Activity {
         findViewById(R.id.publicButton).setOnClickListener(v ->
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(SonicApi.MAP_URL))));
         refreshUi();
+        if (SonicApi.hasSession(this)) loadRouteInfo();
     }
 
     private void login() {
@@ -61,7 +69,12 @@ public class MainActivity extends Activity {
         worker.execute(() -> {
             try {
                 SonicApi.login(getApplicationContext(), e, p);
-                runOnUiThread(() -> { password.setText(""); status.setText("Vendedor autorizado. Listo para comenzar."); refreshUi(); });
+                runOnUiThread(() -> {
+                    password.setText("");
+                    status.setText("Vendedor autorizado. Listo para comenzar.");
+                    refreshUi();
+                    loadRouteInfo();
+                });
             } catch (Exception err) {
                 runOnUiThread(() -> status.setText("No se pudo entrar: " + err.getMessage()));
             } finally { runOnUiThread(() -> login.setEnabled(true)); }
@@ -82,6 +95,48 @@ public class MainActivity extends Activity {
             }
         });
     }
+    /** Lee la misma próxima parada que aparece en la web, sin modificar GPS. */
+    private void loadRouteInfo() {
+        if (!SonicApi.hasSession(this)) return;
+        reloadRoute.setEnabled(false);
+        routeStatus.setText("Consultando la próxima parada en Supabase…");
+        worker.execute(() -> {
+            try {
+                org.json.JSONObject info = SonicApi.getRouteInfo(getApplicationContext());
+                String stopName = info.optString("next_stop", "");
+                String announcement = info.optString("announcement", "");
+                runOnUiThread(() -> {
+                    nextStop.setText(stopName);
+                    routeAnnouncement.setText(announcement);
+                    routeStatus.setText("✓ Datos actuales cargados desde Supabase.");
+                });
+            } catch (Exception ex) {
+                runOnUiThread(() -> routeStatus.setText("No se pudo cargar: " + ex.getMessage()));
+            } finally { runOnUiThread(() -> reloadRoute.setEnabled(true)); }
+        });
+    }
+
+    /** Guarda próxima parada y aviso; son dos campos del panel vendedor ya existente. */
+    private void saveRouteInfo() {
+        if (!SonicApi.hasSession(this)) { routeStatus.setText("Inicia sesión primero."); return; }
+        String stopName = nextStop.getText().toString().trim();
+        String announcement = routeAnnouncement.getText().toString().trim();
+        if (stopName.length() > 120 || announcement.length() > 500) {
+            routeStatus.setText("Máximo 120 caracteres en parada y 500 en aviso.");
+            return;
+        }
+        saveRoute.setEnabled(false);
+        routeStatus.setText("Guardando información en Supabase…");
+        worker.execute(() -> {
+            try {
+                SonicApi.saveRouteInfo(getApplicationContext(), stopName, announcement);
+                runOnUiThread(() -> routeStatus.setText("✓ Guardado. Se mostrará en el mapa público en la siguiente actualización."));
+            } catch (Exception ex) {
+                runOnUiThread(() -> routeStatus.setText("Error al guardar: " + ex.getMessage()));
+            } finally { runOnUiThread(() -> saveRoute.setEnabled(true)); }
+        });
+    }
+
     private void prepareStart() {
         if (TrackingService.running) return;
         if (!SonicApi.hasSession(this)) { status.setText("Primero inicia sesión."); return; }
@@ -113,7 +168,9 @@ public class MainActivity extends Activity {
     }
     private void logout() {
         if (TrackingService.running || TrackingService.stopping) { status.setText("Termina el recorrido antes de cerrar sesión."); return; }
-        SonicApi.logout(this); refreshUi(); status.setText("Sesión cerrada.");
+        SonicApi.logout(this);
+        nextStop.setText(""); routeAnnouncement.setText(""); routeStatus.setText("");
+        refreshUi(); status.setText("Sesión cerrada.");
     }
     @Override public void onRequestPermissionsResult(int req, String[] permissions, int[] grant) {
         super.onRequestPermissionsResult(req, permissions, grant);

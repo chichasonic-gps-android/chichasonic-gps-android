@@ -1,4 +1,4 @@
-name: Crear APK Chichasonic GPS
+name: Crear APK Chichasonic V5
 
 on:
   workflow_dispatch:
@@ -23,7 +23,9 @@ jobs:
           java-version: '17'
 
       - name: Preparar Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
+        with:
+          packages: 'platform-tools'
 
       - name: Instalar Android SDK 35
         run: |
@@ -41,7 +43,7 @@ jobs:
       - name: Guardar APK descargable
         uses: actions/upload-artifact@v4
         with:
-          name: CHICHASONIC-GPS-ANDROID-V4-APK
+          name: CHICHASONIC-ANDROID-VENDEDOR-V5-APK
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 7
